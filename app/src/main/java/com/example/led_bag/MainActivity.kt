@@ -8,8 +8,11 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.blue
@@ -33,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         @Query("green") val g: Int,
         @Query("blue") val b: Int
     )
-
     private val mainLayout: LinearLayout by lazy { findViewById(R.id.main) }
     private val matrixLayout: LinearLayout by lazy { findViewById(R.id.matrix_layout) }
     private val colorPicker: ColorPickerView by lazy { findViewById(R.id.color_picker) }
@@ -41,6 +43,8 @@ class MainActivity : AppCompatActivity() {
     private val clearMatrixButton: Button by lazy { findViewById(R.id.clear_matrix_button) }
     private val sendMatrixButton: Button by lazy { findViewById(R.id.send_matrix_button) }
     private val animationMatrixButton: Button by lazy { findViewById(R.id.animation_matrix_button ) }
+    private val animationDropdown: Spinner by lazy { findViewById(R.id.animation_dropdown ) }
+    private val picsDropdown: Spinner by lazy { findViewById(R.id.pics_dropdown ) }
     private val cellsColorArray: ArrayList<ArrayList<View>> = arrayListOf()
     private var lastPixel = PixelProperties(0, 0, 0, 0, 0);
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,10 +80,14 @@ class MainActivity : AppCompatActivity() {
         animationMatrixButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    RetrofitInstance.api.showAnimation()
+                    RetrofitInstance.api.showAnimation(animationDropdown.selectedItemPosition-1)
                 }catch (e:Exception){
                 }
             }
+        }
+        ArrayAdapter.createFromResource(this,R.array.animation_array,R.layout.dropdownmenu_item).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            animationDropdown.adapter = it
         }
         createMatrix()
     }
@@ -103,8 +111,8 @@ class MainActivity : AppCompatActivity() {
                         if (childOutRect.contains(event.x.toInt(), event.y.toInt())) {
                             childView.setBackgroundColor(colorPicker.color)
                             val current = PixelProperties(
-                                i / 2,
-                                j / 2,
+                                i ,
+                                j,
                                 colorPicker.color.red,
                                 colorPicker.color.green,
                                 colorPicker.color.blue

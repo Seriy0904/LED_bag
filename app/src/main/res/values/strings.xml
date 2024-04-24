@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">LED_bag</string>
+    <string-array name="animation_array">
+        <item>Стоп</item>
+        <item>Смайлик</item>
+        <item>Эффект огня</item>
+    </string-array>
+    <string-array name="pics_array">
+        <item>Стоп</item>
+        <item>Смайлик</item>
+        <item>Эффект огня</item>
+    </string-array>
 </resources>

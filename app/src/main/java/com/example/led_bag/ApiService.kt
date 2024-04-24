@@ -25,7 +25,7 @@ interface ApiService {
     @GET("/show")
     suspend fun showPixels()
     @GET("/animation")
-    suspend fun showAnimation()
+    suspend fun showAnimation( @Query("animationSet") animationSet: Int)
 }
 
 object RetrofitInstance {
