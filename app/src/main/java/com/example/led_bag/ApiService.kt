@@ -26,8 +26,17 @@ interface ApiService {
     suspend fun showPixels()
     @GET("/animation")
     suspend fun showAnimation( @Query("animationSet") animationSet: Int)
+    @GET("/print")
+    suspend fun printText( @Query("text") text: String)
 }
 
+data class PixelProperties(
+    @Query("xPos") val x: Int,
+    @Query("yPos") val y: Int,
+    @Query("red") val r: Int,
+    @Query("green") val g: Int,
+    @Query("blue") val b: Int
+)
 object RetrofitInstance {
     val api: ApiService by lazy {
         val retrofit = Retrofit.Builder()

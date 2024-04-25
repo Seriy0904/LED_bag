@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -36,15 +37,18 @@ class MainActivity : AppCompatActivity() {
         @Query("green") val g: Int,
         @Query("blue") val b: Int
     )
+
     private val mainLayout: LinearLayout by lazy { findViewById(R.id.main) }
     private val matrixLayout: LinearLayout by lazy { findViewById(R.id.matrix_layout) }
     private val colorPicker: ColorPickerView by lazy { findViewById(R.id.color_picker) }
-    private val brightnessSlide: BrightnessSlideBar by lazy { findViewById(R.id.brightnessSlide)}
+    private val brightnessSlide: BrightnessSlideBar by lazy { findViewById(R.id.brightnessSlide) }
     private val clearMatrixButton: Button by lazy { findViewById(R.id.clear_matrix_button) }
     private val sendMatrixButton: Button by lazy { findViewById(R.id.send_matrix_button) }
-    private val animationMatrixButton: Button by lazy { findViewById(R.id.animation_matrix_button ) }
-    private val animationDropdown: Spinner by lazy { findViewById(R.id.animation_dropdown ) }
-    private val picsDropdown: Spinner by lazy { findViewById(R.id.pics_dropdown ) }
+    private val animationMatrixButton: Button by lazy { findViewById(R.id.animation_matrix_button) }
+    private val animationDropdown: Spinner by lazy { findViewById(R.id.animation_dropdown) }
+    private val picsDropdown: Spinner by lazy { findViewById(R.id.pics_dropdown) }
+    private val sendTextField: EditText by lazy { findViewById(R.id.send_text_field) }
+    private val sendTextButton: Button by lazy { findViewById(R.id.send_text_button) }
     private val cellsColorArray: ArrayList<ArrayList<View>> = arrayListOf()
     private var lastPixel = PixelProperties(0, 0, 0, 0, 0);
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,21 +77,29 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     RetrofitInstance.api.showPixels()
-                }catch (e:Exception){
+                } catch (e: Exception) {
                 }
             }
         }
         animationMatrixButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    RetrofitInstance.api.showAnimation(animationDropdown.selectedItemPosition-1)
-                }catch (e:Exception){
+                    RetrofitInstance.api.showAnimation(animationDropdown.selectedItemPosition - 1)
+                } catch (e: Exception) {
                 }
             }
         }
-        ArrayAdapter.createFromResource(this,R.array.animation_array,R.layout.dropdownmenu_item).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            animationDropdown.adapter = it
+        ArrayAdapter.createFromResource(this, R.array.animation_array, R.layout.dropdownmenu_item)
+            .also {
+                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                animationDropdown.adapter = it
+            }
+        sendTextButton.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    RetrofitInstance.api.printText(sendTextField.text.toString())
+                } catch (e: Exception) {}
+            }
         }
         createMatrix()
     }
@@ -111,7 +123,7 @@ class MainActivity : AppCompatActivity() {
                         if (childOutRect.contains(event.x.toInt(), event.y.toInt())) {
                             childView.setBackgroundColor(colorPicker.color)
                             val current = PixelProperties(
-                                i ,
+                                i,
                                 j,
                                 colorPicker.color.red,
                                 colorPicker.color.green,
@@ -146,7 +158,6 @@ class MainActivity : AppCompatActivity() {
             displayMetrics.widthPixels - MATRIX_MARGINS * 2,
             displayMetrics.widthPixels - MATRIX_MARGINS * 2
         )
-        Log.d("MyTag", "Density $density")
         matrixLayoutParams.setMargins(MATRIX_MARGINS)
         matrixLinearLayout.layoutParams = matrixLayoutParams
         matrixLayout.addView(matrixLinearLayout)
@@ -166,6 +177,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    data class MatrixColor(val red: Int, val green: Int, val blue: Int)
 }
