@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_gray"
+    android:orientation="vertical"
+    tools:context=".AnimationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Выберите картинку"
+            android:textColor="@color/white"
+            android:padding="6dp"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/pics_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:spinnerMode="dropdown" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="24dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Выберите анимацию"
+            android:textColor="@color/white"
+            android:padding="6dp"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:backgroundTint="@color/white"
+            android:id="@+id/animation_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="12dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Скорость анимации"
+            android:textColor="@color/white"
+            android:padding="6dp"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.slider.Slider
+            android:id="@+id/animation_speed_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/send_text_field"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/white"
+                tools:text="test" />
+
+            <Button
+                android:id="@+id/send_text_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Send text" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

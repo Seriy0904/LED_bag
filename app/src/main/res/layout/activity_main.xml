@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
+    android:background="@color/dark_gray"
     android:gravity="bottom"
     android:layoutDirection="ltr"
     android:orientation="vertical"
@@ -24,6 +24,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,53 +47,32 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <Button
                 android:text="Fill"
                 android:gravity="start"
-                android:id="@+id/clear_matrix_button"
+                android:id="@+id/fill_matrix_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/pics_dropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"/>
             <Button
-                android:text="Smile"
+                android:text="Animation and text"
                 android:gravity="start"
-                android:clickable="false"
-                android:id="@+id/send_matrix_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/animation_dropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"/>
-            <Button
-
-                android:text="Animation"
-                android:gravity="start"
-                android:clickable="false"
-                android:id="@+id/animation_matrix_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <EditText
-                tools:text="test"
-                android:textColor="@color/white"
-                android:id="@+id/send_text_field"
+                android:id="@+id/animation_open_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <Button
-                android:text="Send text"
+                android:text="Game"
                 android:gravity="start"
-                android:clickable="false"
-                android:id="@+id/send_text_button"
+                android:id="@+id/game_open_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

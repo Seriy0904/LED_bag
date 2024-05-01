@@ -2,18 +2,16 @@ package com.example.led_bag
 
 import android.annotation.SuppressLint
 import android.app.ActionBar.LayoutParams
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.blue
@@ -38,26 +36,21 @@ class MainActivity : AppCompatActivity() {
         @Query("blue") val b: Int
     )
 
-    private val mainLayout: LinearLayout by lazy { findViewById(R.id.main) }
     private val matrixLayout: LinearLayout by lazy { findViewById(R.id.matrix_layout) }
     private val colorPicker: ColorPickerView by lazy { findViewById(R.id.color_picker) }
     private val brightnessSlide: BrightnessSlideBar by lazy { findViewById(R.id.brightnessSlide) }
-    private val clearMatrixButton: Button by lazy { findViewById(R.id.clear_matrix_button) }
-    private val sendMatrixButton: Button by lazy { findViewById(R.id.send_matrix_button) }
-    private val animationMatrixButton: Button by lazy { findViewById(R.id.animation_matrix_button) }
-    private val animationDropdown: Spinner by lazy { findViewById(R.id.animation_dropdown) }
-    private val picsDropdown: Spinner by lazy { findViewById(R.id.pics_dropdown) }
-    private val sendTextField: EditText by lazy { findViewById(R.id.send_text_field) }
-    private val sendTextButton: Button by lazy { findViewById(R.id.send_text_button) }
+    private val fillMatrixButton: Button by lazy { findViewById(R.id.fill_matrix_button) }
+    private val animationOpenButton: Button by lazy { findViewById(R.id.animation_open_button) }
+
+
     private val cellsColorArray: ArrayList<ArrayList<View>> = arrayListOf()
     private var lastPixel = PixelProperties(0, 0, 0, 0, 0);
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         colorPicker.attachBrightnessSlider(brightnessSlide)
-        clearMatrixButton.setOnClickListener {
+        fillMatrixButton.setOnClickListener {
             for (i in cellsColorArray) {
                 for (j in i) {
                     j.setBackgroundColor(colorPicker.color)
@@ -73,33 +66,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        sendMatrixButton.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    RetrofitInstance.api.showPixels()
-                } catch (e: Exception) {
-                }
-            }
-        }
-        animationMatrixButton.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    RetrofitInstance.api.showAnimation(animationDropdown.selectedItemPosition - 1)
-                } catch (e: Exception) {
-                }
-            }
-        }
-        ArrayAdapter.createFromResource(this, R.array.animation_array, R.layout.dropdownmenu_item)
-            .also {
-                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                animationDropdown.adapter = it
-            }
-        sendTextButton.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    RetrofitInstance.api.printText(sendTextField.text.toString())
-                } catch (e: Exception) {}
-            }
+        animationOpenButton.setOnClickListener {
+            startActivity(Intent(this,AnimationActivity::class.java))
         }
         createMatrix()
     }
@@ -107,10 +75,8 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun createMatrix() {
         val displayMetrics: DisplayMetrics = getResources().displayMetrics
-        val density = getResources().displayMetrics.density
         val matrixLinearLayout = LinearLayout(this)
         matrixLinearLayout.orientation = LinearLayout.VERTICAL
-
         matrixLinearLayout.setOnTouchListener { v, event ->
             for (i in 0 until 16) {
                 val view = matrixLinearLayout.getChildAt(i) as LinearLayout

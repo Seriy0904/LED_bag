@@ -26,6 +26,8 @@ interface ApiService {
     suspend fun showPixels()
     @GET("/animation")
     suspend fun showAnimation( @Query("animationSet") animationSet: Int)
+    @GET("/setAnimationSpeed")
+    suspend fun setAnimationSpeed( @Query("animationSpeed") speed: Int)
     @GET("/print")
     suspend fun printText( @Query("text") text: String)
 }
